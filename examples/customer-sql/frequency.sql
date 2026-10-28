@@ -1,5 +1,5 @@
 -- Reformatted frequency query from the team report, Appendix D.
--- Denominator: registered customers, including those with no orders.
+-- Denominator: customers in dim_customer, including zero-order customers if present.
 SELECT c.income_group,
        COUNT(DISTINCT c.customer_key) AS customer_count,
        COUNT(f.order_key) AS total_orders,
