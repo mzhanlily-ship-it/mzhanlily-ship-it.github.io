@@ -1,7 +1,7 @@
 # Portfolio adaptation of the team's R preparation workflow.
 # Inputs: trade(country_code, indicator, value),
 # gni(CountryCode, value), fdi(CountryCode, value), all filtered to 2023.
-# Trade values are already USD millions; GNI / FDI arrive in USD.
+# Assumed units: trade in USD millions; GNI / FDI in USD.
 # Added safeguards: duplicate-key checks and retained missing values.
 library(dplyr)
 library(tidyr)
@@ -9,6 +9,7 @@ library(tidyr)
 prepare_indicators <- function(trade, gni, fdi) {
   stopifnot(!anyDuplicated(gni$CountryCode),
             !anyDuplicated(fdi$CountryCode))
+  # Summation assumes additive trade rows; verify source grain.
   trade_wide <- trade |>
     group_by(country_code, indicator) |>
     summarise(value = sum(value), .groups = "drop") |>
